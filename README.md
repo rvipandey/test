@@ -1,5 +1,52 @@
 # test
 
+    dataLabels: {
+      nodeFormatter: function() {
+        var barShape = this.point.shapeArgs;
+        if (this.point.linksFrom.length !== 0) {
+        	// weight-dependent node coloring
+          var nodeWeightFrom = 0;
+          Highcharts.each(this.point.linksFrom, function(link) {
+            nodeWeightFrom += (link.weight || 0);
+          });
+          this.point.color = Highcharts
+            .color(this.point.color)
+            .brighten(nodeWeightFrom / 50)
+            .get();
+        } else {
+        	// custom picture for the last nodes, which do not have linksFrom
+          if (this.point.customImage) {
+            this.point.customImage.element.remove();
+          }
+          this.point.color = '#FFF';
+          this.point.customImage = this
+            .series
+            .chart
+            .renderer
+            .image('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Noto_Emoji_Oreo_1f192.svg/128px-Noto_Emoji_Oreo_1f192.svg.png', (barShape.x - 36), (barShape.y + barShape.height - 40), 90, 90)
+            .add(this.group)
+            .align({
+              translateX: (
+                this.series.chart.plotLeft +
+                this.series.group.translateX),
+              translateY: (
+                this.series.chart.plotTop +
+                this.series.chart.titleOffset +
+                this.series.group.translateY)
+            }, true)
+            .attr({
+              zIndex: 3
+            })
+            .css({
+              'pointer-events': 'none'
+            });
+        }
+        return this.point.name;
+      }
+    }
+
+
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/sankey.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
