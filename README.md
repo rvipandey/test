@@ -1,5 +1,80 @@
 # test
 
+
+Highcharts.chart('container', {
+
+  title: {
+    text: 'Highcharts Sankey Diagram'
+  },
+
+  series: [{
+    keys: ['from', 'to', 'weight'],
+    data: [
+      //put your list here
+      
+    ],
+    type: 'sankey',
+    name: 'Sankey demo series',
+    dataLabels: {
+      nodeFormatter: function() {
+      	//console.log("test");
+        var barShape = this.point.shapeArgs;
+        console.log(barShape.height)
+        if (this.point.linksFrom.length === 0) {
+          this
+            .series
+            .chart
+            .renderer
+            .image('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Noto_Emoji_Oreo_1f192.svg/128px-Noto_Emoji_Oreo_1f192.svg.png', barShape.x, barShape.y, barShape.width, 25)
+            .add(this.series.group)
+            .attr({ zIndex: 10 })
+            .css({ 'pointer-events': 'none' });
+        }
+        else
+          {
+            var imagename='128px-Noto_Emoji_Oreo_1f192.svg.png'
+            
+             this
+            .series
+            .chart
+            .renderer
+            .image('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Noto_Emoji_Oreo_1f192.svg/'+imagename, (barShape.x+20), barShape.y, (barShape.width+20), 30)   
+             .add(this.series.group)
+            .attr({ zIndex: 10 })
+            .css({ 'pointer-events': 'none' });
+              
+            
+            return this.point.name;
+            
+          }
+          
+    //    return this.point.name;
+      }
+    }
+
+  }]
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     dataLabels: {
       nodeFormatter: function() {
         var barShape = this.point.shapeArgs;
